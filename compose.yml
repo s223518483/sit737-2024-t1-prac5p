@@ -1,0 +1,26 @@
+version: "3.8"
+
+networks:
+  sit737_network:
+    name: sit737_network
+    driver: bridge
+
+services:
+  webapp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: s223518483/nodeapp:latest
+    container_name: nodeapp
+    environment:
+      - PORT=3040
+    ports:
+      - "3040:3040"
+    networks:
+      - sit737_network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3040"]
+      interval: 2m
+      timeout: 10s
+      retries: 3
+    restart: on-failure
